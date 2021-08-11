@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music_Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+     <div class="main_div">
+         <div class="music_container">
+             <h2 class="song_name" id="title">COLD PLAY</h2>
+             <h3 class="Artist_name" id="artist">Jonny Buckland</h3>
+             <div class="img_container">
+                 <img src='images/Coldplay.jpg'>
+             </div>
+             <audio src="music/Yellow.mp3" ></audio>
+
+             <!-- controls -->
+             <div class="music_controls" >
+                <i class="fas fa-backward" id="prev" title="previous"></i>
+                <i class="far fa-play-circle " id="play" title="play"></i>
+                <i class="fas fa-forward" id="next" title="next"></i>
+             </div>
+         </div>
+     </div>
+
+     <script>
+         const music=document.querySelector('audio');
+        const play=document.getElementById('play');
+         const img=document.querySelector('img');
+         const next=document.getElementById('next');
+         const prev=document.getElementById('prev');
+         const title=document.getElementById('title');
+         const artist=document.getElementById('artist');
+
+      const songs=[
+        {
+            name:'Halo',
+            title:'cold play',
+            image:'Coldplay',
+            artist:'jonny buckland',
+        },
+        {
+            name:'temporarypyar',
+            title:'Temporary pyar',
+            artist:'kaka',
+            image:'kaka',
+        },
+        {
+            name:'Yellow',
+            title:'yellow',
+            artist:'Beyonce',
+            image:'beyonce'
+        },
+
+    ]
+
+         let isplaying=false;
+        
+        const playMusic=()=>{
+            isplaying=true;
+            music.play();
+            play.classList.replace('fa-play-circle','fa-pause-circle');
+            img.classList.add('anime');
+        };
+
+        const pauseMusic=()=>{
+            isplaying=false;
+            music.pause();
+            play.classList.replace('fa-pause-circle','fa-play-circle');
+            img.classList.remove('anime');
+        };
+
+
+        play.addEventListener('click', ()=>{
+            // if(isplaying){
+            //     pauseMusic();
+            // }else{
+            //     playMusic();
+            // }
+
+            isplaying ? pauseMusic() : playMusic();
+        });
+
+     const loadSong=(songs)=>{
+         title.textContent=songs.title;
+         artist.textContent=songs.artist;
+         music.src='music/'+songs.name+'.mp3';
+         img.src='images/'+songs.image+'.jpg';
+     }
+     songindex=0;
+        // loadSong(songs[1]);
+
+    const nextSong=()=>{
+        songindex=(songindex+1)%songs.length;
+      loadSong(songs[songindex]);
+      playMusic();
+    };
+
+    const prevSong=()=>{
+        songindex=(songindex-1+songs.length)%songs.length;
+      loadSong(songs[songindex]);
+      playMusic(); 
+    };
+
+
+        next.addEventListener('click',nextSong);
+        prev.addEventListener('click',prevSong);
+     </script>
+</body>
+</html>
