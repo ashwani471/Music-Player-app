@@ -10,14 +10,24 @@
 </head>
 <body>
      <div class="main_div">
-         <div class="music_container" style="background-color:lightcoral ;">
+         <div class="music_container" style="background-color:lightseagreen ;">
              <h2 class="song_name" id="title">COLD PLAY</h2>
              <h3 class="Artist_name" id="artist" style="font-size: 1.7rem; color: burlywood;">Jonny Buckland</h3>
              <div class="img_container">
                  <img src='images/Coldplay.jpg' style="margin-top: 3rem;">
              </div>
              <audio src="music/Yellow.mp3" ></audio>
-
+            
+             <!-- progress_bar -->
+             <div class="progressBar_container" id="progress_container">
+                 <div class="progressDuration_meter">
+                     <div id="currentTim"></div>
+                     <div id="durationTime"></div>
+                 </div>
+                 <div class="progress_div" id="progress_div">
+                     <div class="progress" id="progress"></div>
+                 </div>
+             </div>
              <!-- controls -->
              <div class="music_controls" >
                 <i class="fas fa-backward" id="prev" title="previous"></i>
@@ -35,6 +45,10 @@
          const prev=document.getElementById('prev');
          const title=document.getElementById('title');
          const artist=document.getElementById('artist');
+         let progress=document.getElementById('progress');
+          let currentTim=document.getElementById('currentTim');
+          let durationTime=document.getElementById('durationTime'); 
+         let progress_div=document.getElementById('progress_div');
 
       const songs=[
         {
@@ -147,7 +161,41 @@
       playMusic(); 
     };
 
+    // progress js work
+    music.addEventListener('timeupdate',(event)=>{
+        // console.log(event);
+        const {currentTime,duration}=event.srcElement; 
+        // console.log(currentTime);
+        // console.log(duration);
 
+        let progress_time=(currentTime/duration)*100;
+        progress.style.width=`${progress_time}%`;
+        // music duration update
+     let min_dur=Math.floor(duration/60);
+     let sec_dur=Math.floor(duration%60);
+    //  console.log(min_dur);
+    if(duration){
+    durationTime.textContent=`${min_dur}:${sec_dur}`;
+    }
+
+    //current duration update
+    let min_cur=Math.floor(currentTime/60);
+     let sec_cur=Math.floor(currentTime%60);
+    //  console.log(min_dur);
+    currentTim.textContent=`${min_cur}:${sec_cur}`;
+    })
+    
+    progress_div.addEventListener('click',(event)=>{
+        const {duration}=music;
+        // console.log(event);
+        let move_progress=(event.offsetX/event.srcElement.clientWidth)*duration;
+        // console.log(move_progress);
+        // console.log(duration);
+        music.currentTime=move_progress;
+    })
+
+
+    music.addEventListener("ended",nextSong);
         next.addEventListener('click',nextSong);
         prev.addEventListener('click',prevSong);
      </script>
